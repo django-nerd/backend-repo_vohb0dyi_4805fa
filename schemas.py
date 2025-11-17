@@ -12,7 +12,7 @@ Model name is converted to lowercase for the collection name:
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 
 # Example schemas (replace with your own):
 
@@ -37,6 +37,26 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Spiritual Guru Chat app schemas
+
+class Guru(BaseModel):
+    name: str = Field(..., description="Guru display name")
+    archetype: str = Field(..., description="Short archetype/persona tag")
+    avatar: Optional[str] = Field(None, description="Avatar URL or emoji")
+    description: Optional[str] = Field(None, description="One-line description of this guide")
+
+class Conversation(BaseModel):
+    guru_id: str = Field(..., description="ID of the selected guru")
+    user_name: Optional[str] = Field(None, description="Optional user display name")
+    title: Optional[str] = Field(None, description="Optional conversation title")
+
+class Message(BaseModel):
+    conversation_id: str = Field(..., description="Conversation ID")
+    role: str = Field(..., description="sender role: user or guru")
+    content: str = Field(..., description="message text content")
+    guru_id: Optional[str] = Field(None, description="For guru messages, which guru spoke")
+    meta_tags: Optional[List[str]] = Field(default_factory=list, description="Optional keywords/tags")
 
 # Add your own schemas here:
 # --------------------------------------------------
